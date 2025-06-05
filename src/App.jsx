@@ -2,16 +2,69 @@
 import './App.css'
 import Tasks from './components/Tasks'
 import AddTask from './components/AddTask'
+import { useState } from 'react'
 
 function App() {
+  const [tasks, setTasks] = useState([{
+      id: 1,
+      title: 'Estudar Programação',
+      description: 'Estudar programação para se tornar um dev full stack',
+      is_completed: false
+    },
+    {
+      id: 2,
+      title: 'Estudar Inglês',
+      description: 'Estudar inglês para se tornar fluente',
+      is_completed: false
+    },
+    {
+      id: 3,
+      title: 'Estudar Matemática',
+      description: 'Estudar matemática para se tornar um dev full stack',
+      is_completed: false
+    },
+  ])
+
+  function onAddTaskClick(title, description) {
+    const ultimo_elemento_array = tasks[tasks.length - 1];
+
+    const new_task = {
+      id: ultimo_elemento_array.id + 1,
+      title, 
+      description, 
+      is_completed: false
+    };
+
+    setTasks([...tasks, new_task]);
+  }
+
+  function onTaskClick(task_id) {
+    const new_tasks = tasks.map(task => {
+
+      // Preciso atualizar essa tarefa
+      if (task.id == task_id) {
+        return {...task, is_completed: !task.is_completed};
+      }
+
+      // Não preciso atualizar essa tarefa
+      return task;
+    })
+
+    setTasks(new_tasks)
+  }
+
+  function onDeleteTaskClick(task_id) {
+    const new_tasks = tasks.filter(task => task.id !== task_id);
+
+    setTasks(new_tasks);
+  }
 
   return (
     <div className='w-screen h-screen bg-slate-500 flex justify-center p-6'>
-      <div className='w-[500px]'>
-        <h1 className="text-blue-700 text-3xl">Gerenciador de Tarefas</h1>
-        <AddTask />
-        <Tasks />
-
+      <div className='w-[500px] space-y-4'>
+        <h1 className="text-slate-100 text-3xl font-bold text-center">Gerenciador de Tarefas</h1>
+        <AddTask onAddTaskClick={onAddTaskClick} />
+        <Tasks tasks={tasks}  onTaskClick={onTaskClick} onDeleteTaskClick={onDeleteTaskClick} />
       </div>
     </div>
   )

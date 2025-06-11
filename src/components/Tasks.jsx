@@ -8,7 +8,7 @@ function Tasks({tasks, onTaskClick, onDeleteTaskClick}) {
         const query = new URLSearchParams();
         query.set('title', task.title);
         query.set('description', task.description);
-        navigate(`/task?${query.toString()}`)
+        navigate(`/task?${query.toString()}`);
     }
     
     return (
@@ -25,8 +25,7 @@ function Tasks({tasks, onTaskClick, onDeleteTaskClick}) {
                         <ChevronRight/>
                     </button>
                     <button onClick={() => onDeleteTaskClick(task.id)}
-                        className="bg-slate-400 p-2 rounded-md text-white"
-                    >
+                        className="bg-slate-400 p-2 rounded-md text-white">
                         <Trash />
                     </button>
                 </li>

@@ -2,28 +2,29 @@
 import './App.css'
 import Tasks from './components/Tasks'
 import AddTask from './components/AddTask'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 function App() {
-  const [tasks, setTasks] = useState([{
-      id: 1,
-      title: 'Estudar Programação',
-      description: 'Estudar programação para se tornar um dev full stack',
-      is_completed: false
-    },
-    {
-      id: 2,
-      title: 'Estudar Inglês',
-      description: 'Estudar inglês para se tornar fluente',
-      is_completed: false
-    },
-    {
-      id: 3,
-      title: 'Estudar Matemática',
-      description: 'Estudar matemática para se tornar um dev full stack',
-      is_completed: false
-    },
-  ])
+  const [tasks, setTasks] = useState(JSON.parse(localStorage.getItem('tasks')) || []);
+
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
+
+  // useEffect(() => {
+  //   const fetchTasks = async () => {
+  //     const response = await fetch('https://jsonplaceholder.typicode.com/todos?_limit=10', { 
+  //       method: 'GET'
+  //     });
+
+  //     const data = await response.json();
+
+  //     setTasks(data);
+  //   }
+
+  //   Se quiser você pode chamar uma API para pegar as tarefas
+  //   fetchTasks();
+  // }, []);
 
   function onAddTaskClick(title, description) {
     const ultimo_elemento_array = tasks[tasks.length - 1];

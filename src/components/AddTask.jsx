@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Input from "./Input";
 
-function AddTask({ onAddTaskClick }) {
+function AddTask({ onAddTaskSubmit }) {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     
@@ -23,7 +23,7 @@ function AddTask({ onAddTaskClick }) {
                     if (!title.trim() || !description.trim()) {
                         return alert('Preencha o título e a descrição da tarefa.');
                     }
-                    onAddTaskClick(title, description)
+                    onAddTaskSubmit(title, description)
                     setTitle('');
                     setDescription(''); 
                 }}

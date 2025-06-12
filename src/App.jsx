@@ -1,75 +1,74 @@
-
-import './App.css'
-import Tasks from './components/Tasks'
-import AddTask from './components/AddTask'
-import { useEffect, useState } from 'react'
-import Title from './components/Title';
+import { useEffect, useState } from "react";
+import AddTask from "./components/AddTask";
+import Tasks from "./components/Tasks";
+import { v4 } from "uuid";
+import Title from "./components/Title";
 
 function App() {
-  const [tasks, setTasks] = useState(JSON.parse(localStorage.getItem('tasks')) || []);
+  const [tasks, setTasks] = useState(
+    JSON.parse(localStorage.getItem("tasks")) || []
+  );
 
   useEffect(() => {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
+    localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
   // useEffect(() => {
   //   const fetchTasks = async () => {
-  //     const response = await fetch('https://jsonplaceholder.typicode.com/todos?_limit=10', { 
-  //       method: 'GET'
-  //     });
-
+  //     const response = await fetch(
+  //       "https://jsonplaceholder.typicode.com/todos?_limit=10",
+  //       {
+  //         method: "GET",
+  //       }
+  //     );
   //     const data = await response.json();
-
   //     setTasks(data);
-  //   }
-
-  //   // Chamando uma API para pegar as tarefas
-  //   fetchTasks();
+  //   };
+  //   // SE QUISER, VOCÊ PODE CHAMAR UMA API PARA PEGAR AS TAREFAS
+  //   // fetchTasks();
   // }, []);
 
-  function onAddTaskClick(title, description) {
-    const ultimo_elemento_array = tasks[tasks.length - 1] ?? 1;
-
-    const new_task = {
-      id: ultimo_elemento_array.id + 1,
-      title, 
-      description, 
-      is_completed: false
-    };
-
-    setTasks([...tasks, new_task]);
-  }
-
-  function onTaskClick(task_id) {
-    const new_tasks = tasks.map(task => {
-
-      // Preciso atualizar essa tarefa
-      if (task.id == task_id) {
-        return {...task, is_completed: !task.is_completed};
+  function onTaskClick(taskId) {
+    const new_tasks = tasks.map((task) => {
+      // PRECISO ATUALIZAR ESSA TAREFA
+      if (task.id === taskId) {
+        return { ...task, isCompleted: !task.isCompleted };
       }
 
-      // Não preciso atualizar essa tarefa
+      // NÃO PRECISO ATUALIZAR ESSA TAREFA
       return task;
-    })
-
-    setTasks(new_tasks)
-  }
-
-  function onDeleteTaskClick(task_id) {
-    const new_tasks = tasks.filter(task => task.id !== task_id);
-
+    });
     setTasks(new_tasks);
   }
 
+  function onDeleteTaskClick(task_id) {
+    const new_tasks = tasks.filter((task) => task.id !== task_id);
+    setTasks(new_tasks);
+  }
+
+  function onAddTaskSubmit(title, description) {
+    const new_task = {
+      id: v4(),
+      title,
+      description,
+      isCompleted: false,
+    };
+    setTasks([...tasks, new_task]);
+  }
+
   return (
-    <div className='w-screen h-screen bg-slate-500 flex justify-center p-6'>
-      <div className='w-[500px] space-y-4'>
+    <div className="w-screen h-screen bg-slate-500 flex justify-center p-6">
+      <div className="w-[500px] space-y-4">
         <Title>Gerenciador de Tarefas</Title>
-        <AddTask onAddTaskClick={onAddTaskClick} />
-        <Tasks tasks={tasks}  onTaskClick={onTaskClick} onDeleteTaskClick={onDeleteTaskClick} />
+        <AddTask onAddTaskSubmit={onAddTaskSubmit} />
+        <Tasks
+          tasks={tasks}
+          onTaskClick={onTaskClick}
+          onDeleteTaskClick={onDeleteTaskClick}
+        />
       </div>
     </div>
-  )
+  );
 }
 
 export default App;
